@@ -1,6 +1,99 @@
 {
-  "gainers": [],
-  "losers": [],
-  "tech": [],
-  "last_updated": "2025-06-01 20:36:23"
+  "gainers": [
+    {
+      "symbol": "EVLN",
+      "price": "$49.76 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Buy"
+    },
+    {
+      "symbol": "PLTD",
+      "price": "$9.93 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Buy"
+    },
+    {
+      "symbol": "MDLZ",
+      "price": "$67.49 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Buy"
+    },
+    {
+      "symbol": "REIT",
+      "price": "$26.78 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Buy"
+    },
+    {
+      "symbol": "MIRA",
+      "price": "$1.35 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Buy"
+    }
+  ],
+  "losers": [
+    {
+      "symbol": "ZEXIT",
+      "price": "$10 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Sell"
+    },
+    {
+      "symbol": "ZJZZT",
+      "price": "$10.316716 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Sell"
+    },
+    {
+      "symbol": "ZBZX",
+      "price": "$26.1468 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Sell"
+    },
+    {
+      "symbol": "ZZK",
+      "price": "$24.614859 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Sell"
+    },
+    {
+      "symbol": "ZVV",
+      "price": "$24.983359 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Sell"
+    }
+  ],
+  "tech": [
+    {
+      "symbol": "HIT",
+      "price": "$0.6095 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Hold"
+    },
+    {
+      "symbol": "VGT",
+      "price": "$606.37 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Hold"
+    },
+    {
+      "symbol": "SOC",
+      "price": "$28.78 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Hold"
+    },
+    {
+      "symbol": "IXC",
+      "price": "$37.93 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Hold"
+    },
+    {
+      "symbol": "IJT",
+      "price": "$128.25 (+0.00%)",
+      "reason": "Based on most recent trading day.",
+      "recommendation": "Hold"
+    }
+  ],
+  "last_updated": "2025-06-01 10:44:35"
 }
