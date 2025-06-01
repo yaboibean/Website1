@@ -73,36 +73,47 @@ def create_entry(stock, recommendation, reason):
         "recommendation": recommendation
     }
 
-# ✅ Updated MAIN function
+# ✅ Updated MAIN with logging and robust filtering
 def main():
     try:
         date = get_last_market_date()
         print(f"📅 Using market date: {date}")
         
         grouped_data = fetch_grouped_market_data(date)
+        print(f"📦 Total stocks retrieved: {len(grouped_data)}")
 
-        # Calculate changePercent and apply $2 filter
         filtered_stocks = []
+        skipped_missing = 0
+        skipped_low_price = 0
+
         for stock in grouped_data:
             open_price = stock.get("o")
             close_price = stock.get("c")
             if open_price is None or close_price is None:
+                skipped_missing += 1
                 continue
             if close_price < 2:
-                continue  # Skip low-priced stocks
+                skipped_low_price += 1
+                continue
             change_percent = ((close_price - open_price) / open_price) * 100
             stock["changePercent"] = change_percent
             filtered_stocks.append(stock)
 
-        print(f"✅ Stocks remaining after filter: {len(filtered_stocks)}")
+        print(f"➖ Skipped (missing o/c): {skipped_missing}")
+        print(f"➖ Skipped (under $2): {skipped_low_price}")
+        print(f"✅ Stocks after filter: {len(filtered_stocks)}")
 
         sorted_stocks = sorted(filtered_stocks, key=lambda x: x["changePercent"], reverse=True)
         gainers = sorted_stocks[:5]
         losers = sorted_stocks[-5:]
 
+        print(f"📈 Top Gainers Count: {len(gainers)}")
+        print(f"📉 Top Losers Count: {len(losers)}")
+
         tech_tickers = ["TSLA", "GOOG", "AAPL", "MSFT", "NVDA"]
         tech_data = fetch_specific_tickers_data(tech_tickers, date)
 
+        clean_tech_data = []
         for stock in tech_data:
             open_price = stock.get("open")
             close_price = stock.get("close")
@@ -112,12 +123,13 @@ def main():
             stock["o"] = open_price
             stock["c"] = close_price
             stock["changePercent"] = change_percent
+            clean_tech_data.append(stock)
 
-        print(f"🧠 Tech stocks retrieved: {len(tech_data)}")
+        print(f"🧠 Tech stocks retrieved: {len(clean_tech_data)}")
 
         gainers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in gainers]
         losers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in losers]
-        tech_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in tech_data]
+        tech_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in clean_tech_data]
 
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -128,7 +140,7 @@ def main():
             "last_updated": now_str
         }
 
-        print(f"📈 Gainers: {len(gainers_entries)}, 📉 Losers: {len(losers_entries)}, 🧠 Tech: {len(tech_entries)}")
+        print(f"📦 Final output -> gainers: {len(gainers_entries)}, losers: {len(losers_entries)}, tech: {len(tech_entries)}")
 
         with open("data.json", "w") as f:
             json.dump(output, f, indent=2)
