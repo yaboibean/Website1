@@ -22,19 +22,21 @@
       padding: 20px;
       text-align: center;
     }
-    main {
-      display: block;
-      margin: 20px auto;
-      padding: 0 20px;
-      max-width: 800px;
-    }
-    section {
-      background: #354b66;
-      color: #9db4cc;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
+main {
+  display: block;
+  margin: 20px auto;
+  padding: 0 20px;
+  max-width: 800px;
+}
+
+section {
+  background: #354b66;
+  color: #9db4cc;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
     h2 {
       color: #5680b0;
       border-bottom: 1px solid #465261;
@@ -49,21 +51,7 @@
     }
     .recommendation {
       font-weight: bold;
-    }
-    .rec.strongbuy {
-      color: #00ff7f;
-    }
-    .rec.buy {
       color: #3fb950;
-    }
-    .rec.hold {
-      color: #ffd700;
-    }
-    .rec.sell {
-      color: #ffa500;
-    }
-    .rec.putoption {
-      color: #ff4c4c;
     }
     footer {
       background: #0d1117;
@@ -112,20 +100,19 @@
         };
 
         function renderStock(s) {
-          const recClass = s.recommendation.replace(/\s/g, '').toLowerCase(); // e.g., "strong buy" → "strongbuy"
-          return `
+          return 
             <div class="stock">
               <span class="symbol">${s.symbol}</span> - ${s.price}<br/>
               <em>Reason:</em> ${s.reason}<br/>
-              <span class="recommendation">Recommendation:</span>
-              <span class="rec ${recClass}">${s.recommendation}</span>
-            </div>`;
+              <span class="recommendation">Recommendation:</span> ${s.recommendation}
+            </div>;
         }
 
         sections.gainers.innerHTML += data.gainers.map(renderStock).join('');
         sections.losers.innerHTML += data.losers.map(renderStock).join('');
         sections.tech.innerHTML += data.tech.map(renderStock).join('');
 
+        // Show actual update time from data.json
         document.getElementById('timestamp').textContent = data.last_updated || 'Unavailable';
       } catch (error) {
         console.error('Failed to load market data:', error);
