@@ -3,114 +3,84 @@ import json
 from datetime import datetime, timedelta
 import os
 
-API_KEY = os.getenv("POLYGON_API_KEY", "YOUR_API_KEY")  # Replace with your actual key
+# Load API key from environment or fallback to hardcoded key
+API_KEY = os.getenv("POLYGON_API_KEY", "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ")  # Replace if needed
 
+# Get the most recent weekday (Mon–Fri)
 def get_last_market_date():
     date = datetime.now()
-    while date.weekday() >= 5:  # Weekend
+    while date.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
         date -= timedelta(days=1)
     return date.strftime("%Y-%m-%d")
 
-def fetch_grouped_market_data(date):
-    url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{date}?adjusted=true&include_otc=false&apiKey={API_KEY}"
+# Fetch grouped market data from Polygon and compute % change
+def fetch_market_data():
+    date = get_last_market_date()
+    url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{date}?adjusted=true&include_otc=true&apiKey={API_KEY}"
+
+    print(f"📅 Fetching market data for: {date}")
+
     response = requests.get(url)
     if response.status_code != 200:
-        print("Error:", response.status_code)
+        print(f"❌ Error fetching market data: {response.status_code}")
         return []
-    return response.json().get("results", [])
 
-def fetch_specific_tickers_data(tickers, date):
-    data = []
-    for ticker in tickers:
-        url = f"https://api.polygon.io/v1/open-close/{ticker}/{date}?adjusted=true&apiKey={API_KEY}"
-        response = requests.get(url)
-        if response.status_code != 200:
-            continue
-        result = response.json()
-        if 'status' in result and result['status'] == 'NOT_FOUND':
-            continue
-        result['T'] = ticker
-        data.append(result)
-    return data
+    raw_data = response.json().get("results", [])
 
-def assign_recommendation(change_percent):
-    if change_percent >= 5:
-        return "Strong Buy"
-    elif change_percent >= 2:
-        return "Buy"
-    elif change_percent >= -2:
-        return "Hold"
-    elif change_percent >= -5:
-        return "Sell"
-    else:
-        return "Put Option"
+    # Add computed percent change to each stock
+    for stock in raw_data:
+        try:
+            open_price = stock.get("o", 0)
+            close_price = stock.get("c", 0)
+            if open_price > 0:
+                change_percent = ((close_price - open_price) / open_price) * 100
+            else:
+                change_percent = 0
+            stock["changePercent"] = change_percent
+        except Exception as e:
+            stock["changePercent"] = 0
 
-def assign_reason(ticker, change_percent):
-    reasons = {
-        "TSLA": "Tesla's EV outlook remains strong.",
-        "GOOG": "Alphabet's AI lead continues.",
-        "AAPL": "Apple's product cycle supports stock.",
-        "MSFT": "Microsoft pushes deeper into AI.",
-        "NVDA": "NVIDIA benefits from AI hardware boom."
-    }
-    return reasons.get(ticker, f"Stock moved {change_percent:+.2f}% on the most recent trading day.")
+    return sorted(raw_data, key=lambda x: x["changePercent"], reverse=True)
 
-def create_entry(stock, recommendation, reason):
+# Format each stock entry for output
+def create_entry(stock, recommendation):
     percent = stock.get("changePercent", 0)
-    price = stock.get("c") or stock.get("close", 0)
     return {
         "symbol": stock["T"],
-        "price": f"${price:.2f} ({percent:+.2f}%)",
-        "reason": reason,
+        "price": f"${stock['c']:.2f} ({percent:+.2f}%)",
+        "reason": "Based on price movement from open to close.",
         "recommendation": recommendation
     }
 
+# Main function to generate data.json
 def main():
     try:
-        date = get_last_market_date()
-        grouped = fetch_grouped_market_data(date)
-        tech_symbols = ["TSLA", "GOOG", "AAPL", "MSFT", "NVDA"]
-        tech_data = fetch_specific_tickers_data(tech_symbols, date)
+        stocks = fetch_market_data()
 
-        # Save raw data for debugging
-        with open("raw_polygon_data.json", "w") as f:
-            json.dump(grouped, f, indent=2)
-        with open("raw_tech_data.json", "w") as f:
-            json.dump(tech_data, f, indent=2)
+        if not stocks:
+            print("⚠️ No stock data returned.")
+            return
 
-        stocks = []
-        for stock in grouped:
-            if stock.get("o") and stock.get("c") and stock["c"] > 0:
-                cp = ((stock["c"] - stock["o"]) / stock["o"]) * 100
-                stock["changePercent"] = cp
-                stocks.append(stock)
+        gainers = [create_entry(s, "Buy") for s in stocks[:5]]
+        losers = [create_entry(s, "Sell") for s in stocks[-5:]]
+        tech = [create_entry(s, "Hold") for s in stocks[5:10]]
 
-        sorted_stocks = sorted(stocks, key=lambda x: x["changePercent"], reverse=True)
-        gainers = sorted_stocks[:5]
-        losers = sorted_stocks[-5:]
-
-        clean_tech = []
-        for s in tech_data:
-            if s.get("open") and s.get("close"):
-                cp = ((s["close"] - s["open"]) / s["open"]) * 100
-                s["changePercent"] = cp
-                s["c"] = s["close"]
-                clean_tech.append(s)
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         output = {
-            "gainers": [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in gainers],
-            "losers": [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in losers],
-            "tech": [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in clean_tech],
-            "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            "gainers": gainers,
+            "losers": losers,
+            "tech": tech,
+            "last_updated": now_str
         }
 
         with open("data.json", "w") as f:
             json.dump(output, f, indent=2)
 
-        print("✅ Script finished successfully.")
+        print("✅ data.json updated successfully.")
 
     except Exception as e:
-        print("❌ Error:", str(e))
+        print("🚨 Error:", str(e))
 
 if __name__ == "__main__":
     main()
