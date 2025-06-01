@@ -6,7 +6,12 @@ import os
 API_KEY = os.getenv("POLYGON_API_KEY", "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ")  # use env var if available
 
 def fetch_market_data():
-    date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    def get_last_market_date():
+    date = datetime.now()
+    while date.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
+        date -= timedelta(days=1)
+    return date.strftime("%Y-%m-%d")
+
     url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{date}?adjusted=true&include_otc=true&apiKey={API_KEY}"
 
     response = requests.get(url)
