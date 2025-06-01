@@ -40,14 +40,24 @@ def main():
     try:
         stocks = fetch_market_data()
 
-        if not stocks:
-            gainers = get_sample_data()
-            losers = get_sample_data()
-            tech = get_sample_data()
-        else:
-            gainers = [create_entry(s, "Buy") for s in stocks[:5]]
-            losers = [create_entry(s, "Sell") for s in stocks[-5:]]
-            tech = [create_entry(s, "Hold") for s in stocks[5:10]]
+       now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+if not stocks:
+    gainers = get_sample_data()
+    losers = get_sample_data()
+    tech = get_sample_data()
+else:
+    gainers = [create_entry(s, "Buy") for s in stocks[:5]]
+    losers = [create_entry(s, "Sell") for s in stocks[-5:]]
+    tech = [create_entry(s, "Hold") for s in stocks[5:10]]
+
+output = {
+    "gainers": gainers,
+    "losers": losers,
+    "tech": tech,
+    "last_updated": now_str
+}
+
 
         output = {
             "gainers": gainers,
