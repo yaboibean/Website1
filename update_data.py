@@ -58,7 +58,7 @@ def main():
             json.dump(output, f, indent=2)
 
         print("✅ data.json updated successfully.")
-         Last updated: <span id="timestamp"></span><br/>
+         lastUpdate =  Last updated: <span id="timestamp"></span><br/>
 
     except Exception as e:
         print("🚨 Error:", str(e))
