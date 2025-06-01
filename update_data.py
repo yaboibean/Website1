@@ -2,7 +2,7 @@ import requests
 import json
 from datetime import datetime
 
-API_KEY = "YOUR_POLYGON_API_KEY"  # ← Replace with your real key
+API_KEY = "YOUR_POLYGON_API_KEY"
 BASE_URL = "https://api.polygon.io/v2/snapshot/locale/us/markets/stocks"
 
 def fetch_movers(endpoint):
@@ -11,31 +11,40 @@ def fetch_movers(endpoint):
     if response.status_code != 200:
         print(f"Error fetching {endpoint}: {response.status_code}")
         return []
+
+    tickers = response.json().get("tickers", [])
+    if not tickers:
+        print(f"No data returned for {endpoint}, using fallback.")
+        return [
+            {
+                "symbol": f"FAKE-{endpoint[:3].upper()}",
+                "price": "$123.45 (+4.56%)",
+                "reason": f"Example data for {endpoint}",
+                "recommendation": "Hold"
+            }
+        ]
     
-    tickers = response.json().get("tickers", [])[:5]
     movers = []
-    for t in tickers:
+    for t in tickers[:5]:
         ticker = t["ticker"]
         price = t["lastTrade"]["p"]
         change = t["todaysChangePerc"]
-        reason = t.get("day", {}).get("change", "N/A")
-        recommendation = "Buy" if change > 0 else "Sell"
         movers.append({
             "symbol": ticker,
             "price": f"${price:.2f} ({change:+.2f}%)",
-            "reason": f"Price movement of {change:+.2f}%",
-            "recommendation": recommendation
+            "reason": f"Price moved {change:+.2f}%",
+            "recommendation": "Buy" if change > 0 else "Sell"
         })
     return movers
 
 data = {
     "gainers": fetch_movers("gainers"),
     "losers": fetch_movers("losers"),
-    "tech": []  # Optional: add separate logic for tech if needed
+    "tech": []
 }
 
-# Write to data.json
+# Save to file
 with open("data.json", "w") as f:
     json.dump(data, f, indent=2)
 
-print("Market data updated at", datetime.now())
+print("Update complete at", datetime.now())
