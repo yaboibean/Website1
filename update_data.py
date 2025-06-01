@@ -1,8 +1,9 @@
 import requests
 import json
 from datetime import datetime, timedelta
+import os
 
-API_KEY = "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ"  # Replace this with your actual Polygon API key
+API_KEY = os.getenv("POLYGON_API_KEY", "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ")  # use env var if available
 
 def fetch_market_data():
     date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -51,14 +52,14 @@ def main():
         output = {
             "gainers": gainers,
             "losers": losers,
-            "tech": tech
+            "tech": tech,
+            "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
         with open("data.json", "w") as f:
             json.dump(output, f, indent=2)
 
         print("✅ data.json updated successfully.")
-         lastUpdate =  Last updated: <span id="timestamp"></span><br/>
 
     except Exception as e:
         print("🚨 Error:", str(e))
