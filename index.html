@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Market Movers Today</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    section {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h2 {
+      color: #333;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+    }
+    .stock {
+      margin-bottom: 15px;
+    }
+    .symbol {
+      font-weight: bold;
+      color: #1a73e8;
+    }
+    .recommendation {
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Today's Market Movers</h1>
+    <p>Top gainers, losers, and tech stocks with smart trade signals</p>
+  </header>
+
+  <section id="gainers">
+    <h2>📈 Top Gainers</h2>
+  </section>
+
+  <section id="losers">
+    <h2>📉 Top Losers</h2>
+  </section>
+
+  <section id="tech">
+    <h2>🧠 Popular Tech Stocks</h2>
+  </section>
+
+  <footer>
+    Last updated: <span id="timestamp"></span><br/>
+    Data from TradingView (simulated). This is not financial advice.
+  </footer>
+
+  <script>
+    async function loadMarketData() {
+      try {
+        const response = await fetch('data.json?_=' + new Date().getTime()); // prevent caching
+        const data = await response.json();
+
+        const sections = {
+          gainers: document.getElementById('gainers'),
+          losers: document.getElementById('losers'),
+          tech: document.getElementById('tech')
+        };
+
+        function renderStock(s) {
+          return `
+            <div class="stock">
+              <span class="symbol">${s.symbol}</span> - $${s.price} (${s.change})<br/>
+              <em>Reason:</em> ${s.reason}<br/>
+              <span class="recommendation">Recommendation:</span> ${s.recommendation}
+            </div>`;
+        }
+
+        sections.gainers.innerHTML += data.gainers.map(renderStock).join('');
+        sections.losers.innerHTML += data.losers.map(renderStock).join('');
+        sections.tech.innerHTML += data.tech.map(renderStock).join('');
+
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+      } catch (error) {
+        console.error('Failed to load market data:', error);
+      }
+    }
+
+    loadMarketData();
+  </script>
+
+</body>
+</html>
