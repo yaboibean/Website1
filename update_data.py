@@ -73,7 +73,7 @@ def create_entry(stock, recommendation, reason):
         "recommendation": recommendation
     }
 
-# ✅ Updated MAIN with logging and robust filtering
+# ✅ MAIN function with logging and fallback visibility
 def main():
     try:
         date = get_last_market_date()
@@ -81,6 +81,9 @@ def main():
         
         grouped_data = fetch_grouped_market_data(date)
         print(f"📦 Total stocks retrieved: {len(grouped_data)}")
+
+        print("🔍 First 3 records from Polygon grouped data:")
+        print(json.dumps(grouped_data[:3], indent=2))
 
         filtered_stocks = []
         skipped_missing = 0
@@ -112,6 +115,9 @@ def main():
 
         tech_tickers = ["TSLA", "GOOG", "AAPL", "MSFT", "NVDA"]
         tech_data = fetch_specific_tickers_data(tech_tickers, date)
+
+        print("🔍 Raw tech ticker responses:")
+        print(json.dumps(tech_data, indent=2))
 
         clean_tech_data = []
         for stock in tech_data:
