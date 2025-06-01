@@ -1,0 +1,85 @@
+{
+  "gainers": [
+    {
+      "symbol": "BMGL",
+      "price": "6.08",
+      "change": "+444.62%",
+      "reason": "Cancer drug breakthrough drew investor interest.",
+      "recommendation": "Put Option — likely overinflated."
+    },
+    {
+      "symbol": "GITS",
+      "price": "2.41",
+      "change": "+173.68%",
+      "reason": "Announced new tech partnership.",
+      "recommendation": "Hold — promising but speculative."
+    },
+    {
+      "symbol": "BBSLK",
+      "price": "3.38",
+      "change": "+86.74%",
+      "reason": "Strong earnings report beat forecasts.",
+      "recommendation": "Buy — financials look solid."
+    }
+  ],
+  "losers": [
+    {
+      "symbol": "MDCX",
+      "price": "2.55",
+      "change": "-29.85%",
+      "reason": "Regulatory delay for key drug.",
+      "recommendation": "Sell — facing headwinds."
+    },
+    {
+      "symbol": "ALZN",
+      "price": "3.83",
+      "change": "-29.60%",
+      "reason": "Disappointing Alzheimer's trial data.",
+      "recommendation": "Hold — await more results."
+    },
+    {
+      "symbol": "VENU",
+      "price": "9.37",
+      "change": "-27.31%",
+      "reason": "Revenue miss raises growth concerns.",
+      "recommendation": "Sell — weak outlook."
+    }
+  ],
+  "tech": [
+    {
+      "symbol": "MSFT",
+      "price": "460.36",
+      "change": "+0.21%",
+      "reason": "Strong AI and cloud demand.",
+      "recommendation": "Buy — long-term upside."
+    },
+    {
+      "symbol": "AAPL",
+      "price": "200.85",
+      "change": "+0.38%",
+      "reason": "Steady demand despite regulations.",
+      "recommendation": "Hold — stable fundamentals."
+    },
+    {
+      "symbol": "NVDA",
+      "price": "135.13",
+      "change": "-3.05%",
+      "reason": "Supply chain concerns.",
+      "recommendation": "Buy — AI growth driver."
+    },
+    {
+      "symbol": "GOOG",
+      "price": "172.85",
+      "change": "-0.09%",
+      "reason": "Regulatory scrutiny continues.",
+      "recommendation": "Hold — strong core business."
+    },
+    {
+      "symbol": "AMZN",
+      "price": "205.01",
+      "change": "-0.49%",
+      "reason": "Broad market fluctuation.",
+      "recommendation": "Buy — cloud and retail strength."
+    }
+  ]
+}
