@@ -73,49 +73,48 @@ def create_entry(stock, recommendation, reason):
         "recommendation": recommendation
     }
 
+# ✅ Updated MAIN function
 def main():
     try:
         date = get_last_market_date()
+        print(f"📅 Using market date: {date}")
+        
         grouped_data = fetch_grouped_market_data(date)
 
-        # Calculate changePercent for each stock and filter out stocks below $2
+        # Calculate changePercent and apply $2 filter
         filtered_stocks = []
         for stock in grouped_data:
-            open_price = stock.get("o", 0)
-            close_price = stock.get("c", 0)
+            open_price = stock.get("o")
+            close_price = stock.get("c")
+            if open_price is None or close_price is None:
+                continue
             if close_price < 2:
-                continue  # Skip stocks below $2
-            if open_price > 0:
-                change_percent = ((close_price - open_price) / open_price) * 100
-            else:
-                change_percent = 0
+                continue  # Skip low-priced stocks
+            change_percent = ((close_price - open_price) / open_price) * 100
             stock["changePercent"] = change_percent
             filtered_stocks.append(stock)
 
-        # Sort stocks by changePercent
-        sorted_stocks = sorted(filtered_stocks, key=lambda x: x["changePercent"], reverse=True)
+        print(f"✅ Stocks remaining after filter: {len(filtered_stocks)}")
 
-        # Get top 5 gainers and losers
+        sorted_stocks = sorted(filtered_stocks, key=lambda x: x["changePercent"], reverse=True)
         gainers = sorted_stocks[:5]
         losers = sorted_stocks[-5:]
 
-        # Fetch data for major tech stocks
         tech_tickers = ["TSLA", "GOOG", "AAPL", "MSFT", "NVDA"]
         tech_data = fetch_specific_tickers_data(tech_tickers, date)
 
-        # Calculate changePercent for tech stocks
         for stock in tech_data:
-            open_price = stock.get("open", 0)
-            close_price = stock.get("close", 0)
-            if open_price > 0:
-                change_percent = ((close_price - open_price) / open_price) * 100
-            else:
-                change_percent = 0
+            open_price = stock.get("open")
+            close_price = stock.get("close")
+            if open_price is None or close_price is None:
+                continue
+            change_percent = ((close_price - open_price) / open_price) * 100
             stock["o"] = open_price
             stock["c"] = close_price
             stock["changePercent"] = change_percent
 
-        # Create entries
+        print(f"🧠 Tech stocks retrieved: {len(tech_data)}")
+
         gainers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in gainers]
         losers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in losers]
         tech_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in tech_data]
@@ -128,6 +127,8 @@ def main():
             "tech": tech_entries,
             "last_updated": now_str
         }
+
+        print(f"📈 Gainers: {len(gainers_entries)}, 📉 Losers: {len(losers_entries)}, 🧠 Tech: {len(tech_entries)}")
 
         with open("data.json", "w") as f:
             json.dump(output, f, indent=2)
