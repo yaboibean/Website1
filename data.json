@@ -1,99 +1,93 @@
 {
   "gainers": [
     {
-      "symbol": "BLSP",
-      "price": "$0.00 (+9900.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Buy"
+      "symbol": "BMGL",
+      "price": "$6.08 (+375.00%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Strong Buy"
     },
     {
-      "symbol": "NOUV",
-      "price": "$0.00 (+9900.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Buy"
+      "symbol": "GWH",
+      "price": "$1.70 (+86.67%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Strong Buy"
     },
     {
-      "symbol": "GRFXY",
-      "price": "$0.50 (+4850.50%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Buy"
+      "symbol": "SEATW",
+      "price": "$0.29 (+70.95%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Strong Buy"
     },
     {
-      "symbol": "AZULQ",
-      "price": "$0.27 (+2560.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Buy"
+      "symbol": "HPKEW",
+      "price": "$0.68 (+65.73%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Strong Buy"
     },
     {
-      "symbol": "IGOT",
-      "price": "$0.00 (+2400.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Buy"
+      "symbol": "BTBDW",
+      "price": "$0.07 (+48.86%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Strong Buy"
     }
   ],
   "losers": [
     {
-      "symbol": "EKSN",
-      "price": "$0.00 (-94.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Sell"
+      "symbol": "TALKW",
+      "price": "$0.09 (-31.71%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Put Option"
     },
     {
-      "symbol": "BIGGQ",
-      "price": "$0.00 (-95.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Sell"
+      "symbol": "RBOT.WS",
+      "price": "$0.02 (-34.89%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Put Option"
     },
     {
-      "symbol": "SMFL",
-      "price": "$0.00 (-98.67%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Sell"
+      "symbol": "RELIW",
+      "price": "$0.03 (-35.09%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Put Option"
     },
     {
-      "symbol": "MMEX",
-      "price": "$0.00 (-99.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Sell"
+      "symbol": "AUUDW",
+      "price": "$0.03 (-41.24%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Put Option"
     },
     {
-      "symbol": "SPBV",
-      "price": "$0.00 (-99.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Sell"
+      "symbol": "CISO",
+      "price": "$0.81 (-42.76%)",
+      "reason": "Significant price movement observed.",
+      "recommendation": "Put Option"
     }
   ],
   "tech": [
     {
-      "symbol": "XELA",
-      "price": "$0.00 (+1550.00%)",
-      "reason": "Based on price movement from open to close.",
+      "symbol": "TSLA",
+      "price": "$346.46 (-2.55%)",
+      "reason": "Recent developments in electric vehicle market.",
+      "recommendation": "Sell"
+    },
+    {
+      "symbol": "GOOG",
+      "price": "$172.85 (+0.26%)",
+      "reason": "Alphabet's latest earnings report exceeded expectations.",
       "recommendation": "Hold"
     },
     {
-      "symbol": "NXTH",
-      "price": "$0.00 (+900.00%)",
-      "reason": "Based on price movement from open to close.",
+      "symbol": "AAPL",
+      "price": "$200.85 (+0.74%)",
+      "reason": "Apple's new product launch generated positive market response.",
       "recommendation": "Hold"
     },
     {
-      "symbol": "SRNE",
-      "price": "$0.00 (+550.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Hold"
-    },
-    {
-      "symbol": "SNMN",
-      "price": "$0.00 (+400.00%)",
-      "reason": "Based on price movement from open to close.",
-      "recommendation": "Hold"
-    },
-    {
-      "symbol": "BMGL",
-      "price": "$6.08 (+375.00%)",
-      "reason": "Based on price movement from open to close.",
+      "symbol": "MSFT",
+      "price": "$460.36 (+0.14%)",
+      "reason": "Microsoft announced strategic partnerships in AI sector.",
       "recommendation": "Hold"
     }
   ],
-  "last_updated": "2025-06-01 10:55:35"
+  "last_updated": "2025-06-01 11:16:33"
 }
