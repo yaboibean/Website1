@@ -7,7 +7,7 @@ API_KEY = os.getenv("POLYGON_API_KEY", "YOUR_API_KEY")  # Replace with your actu
 
 def get_last_market_date():
     date = datetime.now()
-    while date.weekday() >= 5:  # Weekend check
+    while date.weekday() >= 5:  # Weekend
         date -= timedelta(days=1)
     return date.strftime("%Y-%m-%d")
 
@@ -46,14 +46,14 @@ def assign_recommendation(change_percent):
         return "Put Option"
 
 def assign_reason(ticker, change_percent):
-    special = {
+    reasons = {
         "TSLA": "Tesla's EV outlook remains strong.",
         "GOOG": "Alphabet's AI lead continues.",
         "AAPL": "Apple's product cycle supports stock.",
         "MSFT": "Microsoft pushes deeper into AI.",
-        "NVDA": "NVIDIA gains from AI hardware boom."
+        "NVDA": "NVIDIA benefits from AI hardware boom."
     }
-    return special.get(ticker, f"Stock moved {change_percent:+.2f}% on the most recent trading day.")
+    return reasons.get(ticker, f"Stock moved {change_percent:+.2f}% on the most recent trading day.")
 
 def create_entry(stock, recommendation, reason):
     percent = stock.get("changePercent", 0)
@@ -72,7 +72,12 @@ def main():
         tech_symbols = ["TSLA", "GOOG", "AAPL", "MSFT", "NVDA"]
         tech_data = fetch_specific_tickers_data(tech_symbols, date)
 
-        # Calculate gain/loss % for grouped data
+        # Save raw data for debugging
+        with open("raw_polygon_data.json", "w") as f:
+            json.dump(grouped, f, indent=2)
+        with open("raw_tech_data.json", "w") as f:
+            json.dump(tech_data, f, indent=2)
+
         stocks = []
         for stock in grouped:
             if stock.get("o") and stock.get("c") and stock["c"] > 0:
@@ -84,30 +89,28 @@ def main():
         gainers = sorted_stocks[:5]
         losers = sorted_stocks[-5:]
 
-        # Tech data: calculate % movement
-        tech_clean = []
+        clean_tech = []
         for s in tech_data:
             if s.get("open") and s.get("close"):
                 cp = ((s["close"] - s["open"]) / s["open"]) * 100
                 s["changePercent"] = cp
                 s["c"] = s["close"]
-                tech_clean.append(s)
+                clean_tech.append(s)
 
-        # Format output
         output = {
             "gainers": [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in gainers],
             "losers": [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in losers],
-            "tech": [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in tech_clean],
+            "tech": [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in clean_tech],
             "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
         with open("data.json", "w") as f:
             json.dump(output, f, indent=2)
 
-        print("✅ Reverted version ran successfully.")
+        print("✅ Script finished successfully.")
 
     except Exception as e:
-        print("❌ Error in script:", str(e))
+        print("❌ Error:", str(e))
 
 if __name__ == "__main__":
     main()
