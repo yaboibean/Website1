@@ -1,50 +1,66 @@
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
-API_KEY = "YOUR_POLYGON_API_KEY"
-BASE_URL = "https://api.polygon.io/v2/snapshot/locale/us/markets/stocks"
+API_KEY = "YOUR_POLYGON_API_KEY"  # Replace this with your actual Polygon API key
 
-def fetch_movers(endpoint):
-    url = f"{BASE_URL}/{endpoint}?apiKey={API_KEY}"
+def fetch_market_data():
+    date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{date}?adjusted=true&include_otc=true&apiKey={API_KEY}"
+
     response = requests.get(url)
     if response.status_code != 200:
-        print(f"Error fetching {endpoint}: {response.status_code}")
+        print(f"Error fetching market data: {response.status_code}")
         return []
 
-    tickers = response.json().get("tickers", [])
-    if not tickers:
-        print(f"No data returned for {endpoint}, using fallback.")
-        return [
-            {
-                "symbol": f"FAKE-{endpoint[:3].upper()}",
-                "price": "$123.45 (+4.56%)",
-                "reason": f"Example data for {endpoint}",
-                "recommendation": "Hold"
-            }
-        ]
-    
-    movers = []
-    for t in tickers[:5]:
-        ticker = t["ticker"]
-        price = t["lastTrade"]["p"]
-        change = t["todaysChangePerc"]
-        movers.append({
-            "symbol": ticker,
-            "price": f"${price:.2f} ({change:+.2f}%)",
-            "reason": f"Price moved {change:+.2f}%",
-            "recommendation": "Buy" if change > 0 else "Sell"
-        })
-    return movers
+    data = response.json().get("results", [])
+    return sorted(data, key=lambda x: x.get("changePercent", 0), reverse=True)
 
-data = {
-    "gainers": fetch_movers("gainers"),
-    "losers": fetch_movers("losers"),
-    "tech": []
-}
+def create_entry(stock, recommendation):
+    percent = stock.get("changePercent", 0)
+    return {
+        "symbol": stock["T"],
+        "price": f"${stock['c']} ({percent:+.2f}%)",
+        "reason": "Based on overnight/pre-market activity.",
+        "recommendation": recommendation
+    }
 
-# Save to file
-with open("data.json", "w") as f:
-    json.dump(data, f, indent=2)
+def get_sample_data():
+    return [
+        {
+            "symbol": "TEST",
+            "price": "$10.00 (+5.00%)",
+            "reason": "Sample pre-market data.",
+            "recommendation": "Hold"
+        }
+    ]
 
-print("Update complete at", datetime.now())
+def main():
+    try:
+        stocks = fetch_market_data()
+
+        if not stocks:
+            gainers = get_sample_data()
+            losers = get_sample_data()
+            tech = get_sample_data()
+        else:
+            gainers = [create_entry(s, "Buy") for s in stocks[:5]]
+            losers = [create_entry(s, "Sell") for s in stocks[-5:]]
+            tech = [create_entry(s, "Hold") for s in stocks[5:10]]
+
+        output = {
+            "gainers": gainers,
+            "losers": losers,
+            "tech": tech
+        }
+
+        with open("data.json", "w") as f:
+            json.dump(output, f, indent=2)
+
+        print("✅ data.json updated successfully.")
+
+    except Exception as e:
+        print("🚨 Error:", str(e))
+
+if __name__ == "__main__":
+    main()
