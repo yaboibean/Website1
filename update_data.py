@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timedelta
 import os
 
-API_KEY = os.getenv("0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ")  # Replace with your actual API key
+API_KEY = "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ"  # Replace with your actual API key
 
 # Get the most recent weekday (Mon–Fri)
 def get_last_market_date():
