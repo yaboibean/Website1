@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timedelta
 import os
 
-API_KEY = "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ"  # Replace with your actual API key
+API_KEY = os.getenv("POLYGON_API_KEY", "YOUR_API_KEY")  # Replace with your actual API key
 
 # Get the most recent weekday (Mon–Fri)
 def get_last_market_date():
@@ -53,15 +53,15 @@ def assign_recommendation(change_percent):
         return "Put Option"
 
 # Assign reason based on ticker
-def assign_reason(ticker):
+def assign_reason(ticker, change_percent):
     reasons = {
-        "TSLA": "Recent developments in electric vehicle market.",
+        "TSLA": "Tesla's recent developments in the electric vehicle market.",
         "GOOG": "Alphabet's latest earnings report exceeded expectations.",
         "AAPL": "Apple's new product launch generated positive market response.",
-        "MSFT": "Microsoft announced strategic partnerships in AI sector.",
+        "MSFT": "Microsoft announced strategic partnerships in the AI sector.",
         "NVDA": "NVIDIA's advancements in GPU technology boosted investor confidence."
     }
-    return reasons.get(ticker, "Significant price movement observed.")
+    return reasons.get(ticker, f"Stock moved {change_percent:+.2f}% on the most recent trading day.")
 
 # Format each stock entry for display
 def create_entry(stock, recommendation, reason):
@@ -78,18 +78,22 @@ def main():
         date = get_last_market_date()
         grouped_data = fetch_grouped_market_data(date)
 
-        # Calculate changePercent for each stock
+        # Calculate changePercent for each stock and filter out stocks below $2
+        filtered_stocks = []
         for stock in grouped_data:
             open_price = stock.get("o", 0)
             close_price = stock.get("c", 0)
+            if close_price < 2:
+                continue  # Skip stocks below $2
             if open_price > 0:
                 change_percent = ((close_price - open_price) / open_price) * 100
             else:
                 change_percent = 0
             stock["changePercent"] = change_percent
+            filtered_stocks.append(stock)
 
         # Sort stocks by changePercent
-        sorted_stocks = sorted(grouped_data, key=lambda x: x["changePercent"], reverse=True)
+        sorted_stocks = sorted(filtered_stocks, key=lambda x: x["changePercent"], reverse=True)
 
         # Get top 5 gainers and losers
         gainers = sorted_stocks[:5]
@@ -112,9 +116,9 @@ def main():
             stock["changePercent"] = change_percent
 
         # Create entries
-        gainers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"])) for s in gainers]
-        losers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"])) for s in losers]
-        tech_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"])) for s in tech_data]
+        gainers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in gainers]
+        losers_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in losers]
+        tech_entries = [create_entry(s, assign_recommendation(s["changePercent"]), assign_reason(s["T"], s["changePercent"])) for s in tech_data]
 
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
