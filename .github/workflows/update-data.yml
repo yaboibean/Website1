@@ -2,7 +2,7 @@ name: Update Market Data
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Every hour
+    - cron: '*/5 * * * *'  # Every 5 minutes
   workflow_dispatch:     # Enables manual run button
 
 jobs:
