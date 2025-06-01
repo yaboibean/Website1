@@ -1,99 +1,99 @@
 {
   "gainers": [
     {
-      "symbol": "EVLN",
-      "price": "$49.76 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "BLSP",
+      "price": "$0.00 (+9900.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Buy"
     },
     {
-      "symbol": "PLTD",
-      "price": "$9.93 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "NOUV",
+      "price": "$0.00 (+9900.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Buy"
     },
     {
-      "symbol": "MDLZ",
-      "price": "$67.49 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "GRFXY",
+      "price": "$0.50 (+4850.50%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Buy"
     },
     {
-      "symbol": "REIT",
-      "price": "$26.78 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "AZULQ",
+      "price": "$0.27 (+2560.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Buy"
     },
     {
-      "symbol": "MIRA",
-      "price": "$1.35 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "IGOT",
+      "price": "$0.00 (+2400.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Buy"
     }
   ],
   "losers": [
     {
-      "symbol": "ZEXIT",
-      "price": "$10 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "EKSN",
+      "price": "$0.00 (-94.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Sell"
     },
     {
-      "symbol": "ZJZZT",
-      "price": "$10.316716 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "BIGGQ",
+      "price": "$0.00 (-95.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Sell"
     },
     {
-      "symbol": "ZBZX",
-      "price": "$26.1468 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "SMFL",
+      "price": "$0.00 (-98.67%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Sell"
     },
     {
-      "symbol": "ZZK",
-      "price": "$24.614859 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "MMEX",
+      "price": "$0.00 (-99.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Sell"
     },
     {
-      "symbol": "ZVV",
-      "price": "$24.983359 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "SPBV",
+      "price": "$0.00 (-99.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Sell"
     }
   ],
   "tech": [
     {
-      "symbol": "HIT",
-      "price": "$0.6095 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "XELA",
+      "price": "$0.00 (+1550.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Hold"
     },
     {
-      "symbol": "VGT",
-      "price": "$606.37 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "NXTH",
+      "price": "$0.00 (+900.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Hold"
     },
     {
-      "symbol": "SOC",
-      "price": "$28.78 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "SRNE",
+      "price": "$0.00 (+550.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Hold"
     },
     {
-      "symbol": "IXC",
-      "price": "$37.93 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "SNMN",
+      "price": "$0.00 (+400.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Hold"
     },
     {
-      "symbol": "IJT",
-      "price": "$128.25 (+0.00%)",
-      "reason": "Based on most recent trading day.",
+      "symbol": "BMGL",
+      "price": "$6.08 (+375.00%)",
+      "reason": "Based on price movement from open to close.",
       "recommendation": "Hold"
     }
   ],
-  "last_updated": "2025-06-01 10:44:35"
+  "last_updated": "2025-06-01 10:55:35"
 }
