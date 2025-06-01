@@ -13,7 +13,7 @@ def get_last_market_date():
         date -= timedelta(days=1)
     return date.strftime("%Y-%m-%d")
 
-# Fetch grouped market data from Polygon
+# Fetch grouped market data from Polygon and compute % change
 def fetch_market_data():
     date = get_last_market_date()
     url = f"https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{date}?adjusted=true&include_otc=true&apiKey={API_KEY}"
@@ -25,16 +25,30 @@ def fetch_market_data():
         print(f"❌ Error fetching market data: {response.status_code}")
         return []
 
-    data = response.json().get("results", [])
-    return sorted(data, key=lambda x: x.get("changePercent", 0), reverse=True)
+    raw_data = response.json().get("results", [])
 
-# Format each stock entry for display
+    # Add computed percent change to each stock
+    for stock in raw_data:
+        try:
+            open_price = stock.get("o", 0)
+            close_price = stock.get("c", 0)
+            if open_price > 0:
+                change_percent = ((close_price - open_price) / open_price) * 100
+            else:
+                change_percent = 0
+            stock["changePercent"] = change_percent
+        except Exception as e:
+            stock["changePercent"] = 0
+
+    return sorted(raw_data, key=lambda x: x["changePercent"], reverse=True)
+
+# Format each stock entry for output
 def create_entry(stock, recommendation):
     percent = stock.get("changePercent", 0)
     return {
         "symbol": stock["T"],
-        "price": f"${stock['c']} ({percent:+.2f}%)",
-        "reason": "Based on most recent trading day.",
+        "price": f"${stock['c']:.2f} ({percent:+.2f}%)",
+        "reason": "Based on price movement from open to close.",
         "recommendation": recommendation
     }
 
