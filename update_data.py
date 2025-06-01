@@ -1,7 +1,7 @@
 import requests
 import json
 
-API_KEY = "idEz43jpOmCkSZ5eq5niptvxEHxPJi64"  # Replace with your actual Polygon.io API key
+API_KEY = "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ"  # Replace with your actual Polygon.io API key
 
 def fetch_top_movers(direction):
     url = f'https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/{direction}?apiKey={API_KEY}'
