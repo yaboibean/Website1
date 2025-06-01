@@ -1,5 +1,26 @@
 {
-  "gainers": [],
-  "losers": [],
-  "tech": []
+  "gainers": [
+    {
+      "symbol": "TEST",
+      "price": "$10.00 (+5.00%)",
+      "reason": "Sample pre-market data.",
+      "recommendation": "Hold"
+    }
+  ],
+  "losers": [
+    {
+      "symbol": "TEST",
+      "price": "$10.00 (+5.00%)",
+      "reason": "Sample pre-market data.",
+      "recommendation": "Hold"
+    }
+  ],
+  "tech": [
+    {
+      "symbol": "TEST",
+      "price": "$10.00 (+5.00%)",
+      "reason": "Sample pre-market data.",
+      "recommendation": "Hold"
+    }
+  ]
 }
