@@ -2,7 +2,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-API_KEY = "YOUR_POLYGON_API_KEY"  # Replace this with your actual Polygon API key
+API_KEY = "0eRSRdku5AEEVsmIURHBd_32ztFEfsjZ"  # Replace this with your actual Polygon API key
 
 def fetch_market_data():
     date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
